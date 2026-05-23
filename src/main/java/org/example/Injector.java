@@ -5,9 +5,17 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Properties;
 
+/**
+ * Класс-инжектор, реализующий механизм внедрения зависимостей .
+ * Считывает конфигурацию и инициализирует поля
+ *  {@link AutoInjectable}.
+ */
 public class Injector {
     private Properties properties;
 
+    /**
+     * Конструктор инжектора. Загружает настройки из ресурсов.
+     */
     public Injector() {
         properties = new Properties();
         try {
@@ -18,6 +26,15 @@ public class Injector {
         }
     }
 
+    /**
+     * Внедряет зависимости в переданный объект.
+     * Проходит по всем полям объекта и, если поле помечено @AutoInjectable,
+     * инициализирует его соответствующим классом из конфигурации.
+     *
+     * @param object объект, в который нужно внедрить зависимости
+     * @param <T> тип объекта
+     * @return объект с внедренными зависимостями
+     */
     public <T> T inject(T object) {
         Field[] fields = object.getClass().getDeclaredFields();
 
